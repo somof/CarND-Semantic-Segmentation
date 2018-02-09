@@ -1,4 +1,129 @@
 # Semantic Segmentation
+
+
+
+## Build the Neural Network
+
+### Does the project load the pretrained vgg model?
+
+- The function load_vgg is implemented correctly.
+
+### Does the project learn the correct features from the images?
+
+- The function layers is implemented correctly.
+
+### Does the project optimize the neural network?
+
+- The function optimize is implemented correctly.
+
+### Does the project train the neural network?
+
+- The function train_nn is implemented correctly.
+  The loss of the network should be printed while the network is training.
+
+
+## Neural Network Training
+
+### Does the project train the model correctly?
+
+- On average, the model decreases loss over time.
+
+### Does the project use reasonable hyperparameters?
+
+- The number of epoch and batch size are set to a reasonable number.
+
+### Does the project correctly label the road?
+
+- The project labels most pixels of roads close to the best solution.
+  The model doesn't have to predict correctly all the images, just most of them.
+
+- A solution that is close to best would label at least 80% of the
+  road and label no more than 20% of non-road pixels as road.
+
+
+## Create the spot instance in AWS
+
+https://classroom.udacity.com/nanodegrees/nd013/parts/fbf77062-5703-404e-b60c-95b78b2f3f9e/modules/6df7ae49-c61c-4bb2-a23e-6527e69209ec/lessons/614d4728-0fad-4c9d-a6c3-23227aef8f66/concepts/f6fccba8-0009-4d05-9356-fae428b6efb4#
+
+View your EC2 Service Limit report at: https://console.aws.amazon.com/ec2/v2/home?#Limits
+
+Find your "Current Limit" for the g2.2xlarge instance type.
+
+Note: Not every AWS region supports GPU instances. If the region you've chosen does not support GPU instances, but you would like to use a GPU instance, then change your AWS region.
+
+
+Submit a Limit Increase Request
+From the EC2 Service Limits page, click on “Request limit increase” next to “g2.2xlarge”.
+You will not be charged for requesting a limit increase. You will only be charged once you actually launch an instance.
+
+We’ve created an AMI for you!
+Search for the “udacity-carnd” AMI.
+Select the g2.2xlarge instance type:
+Increase the storage size to 16 GB (or more, if necessary):
+
+
+
+How to run Semantic Segmentation on AWS ?
+https://discussions.udacity.com/t/how-to-run-semantic-segmentation-on-aws/352069/61
+
+
+Spot instances and AMI
+https://discussions.udacity.com/t/spot-instances-and-ami/561250
+
+
+
+
+
+
+
+## Pyenv setting
+
+This project uses python 3.5.4 by pyenv,
+and other after 3.3 versions of python would work as same as it.
+
+
+sudo apt-get remove nvidia-*
+wget http://us.download.nvidia.com/XFree86/Linux-x86_64/375.66/NVIDIA-Linux-x86_64-375.66.run
+sudo bash ./NVIDIA-Linux-x86_64-375.66.run  --dkms
+
+
+```
+# Amazon Linux
+# yum -y install gcc gcc-c++ make git openssl-devel bzip2-devel zlib-devel readline-devel sqlite-devel
+yum -y install git make
+
+git clone https://github.com/yyuu/pyenv.git ~/.pyenv
+or
+cd ~/.pyenv; git pull
+
+echo 'export PYENV_ROOT="${HOME}/.pyenv"' >> ~/.bashrc
+echo 'if [ -d "${PYENV_ROOT}" ]; then' >> ~/.bashrc
+echo 'export PATH=${PYENV_ROOT}/bin:$PATH' >> ~/.bashrc
+echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+echo 'fi' >> ~/.bashrc
+source ~/.bashrc
+
+pyenv install 3.5.4
+~/.pyenv/versions/3.5.4/bin/pip3 install tensorflow==1.4 numpy scipy tqdm Pillow
+or
+~/.pyenv/versions/3.5.4/bin/pip3 install tensorflow-gpu==1.4 numpy scipy tqdm Pillow
+~/.pyenv/versions/3.5.4/bin/pip3 install tensorflow-gpu numpy scipy tqdm Pillow
+```
+
+~/.pyenv/versions/3.6.4/bin/pip3 install tensorflow numpy scipy tqdm Pillow opencv-python moviepy
+
+
+
+
+
+
+
+
+
+
+
+## original README
+
 ### Introduction
 In this project, you'll label the pixels of a road in images using a Fully Convolutional Network (FCN).
 
