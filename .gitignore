@@ -101,3 +101,11 @@ ENV/
 .mypy_cache/
 
 RUNS/
+*.mp4
+*.png
+*.csv
+*.xlsx
+fcn8-loop1/
+loop1000_20180208/
+trash/
+optimize_for_inference.py
