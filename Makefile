@@ -1,5 +1,6 @@
-PYTHON = env LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64 ~/.pyenv/versions/3.5.4/bin/python
 PYTHON = env LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64 ~/.pyenv/shims/python
+PYTHON = env LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64 ~/.pyenv/versions/3.5.4/bin/python
+PYTHON = env LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64 ~/.pyenv/versions/3.5.4/bin/python
 PYTHON35 = ~/.pyenv/versions/3.5.4/bin/python
 PYTHON36 = ~/.pyenv/versions/3.6.4/bin/python
 OPTIMIZE = ../tensorflow/tensorflow/python/tools/optimize_for_inference.py
@@ -29,17 +30,23 @@ strip_unused_nodes \
 sort_by_execution_order
 endef
 
-all: optimize infer
+all: # train # optimize infer
+	@#$(PYTHON) main.py | tee ss-gpu-train.log;
+	$(PYTHON) reuse_graph.py | tee ss-gpu-infer.log;
+	@#$(PYTHON) reuse_graph_video.py | tee ss-gpu-video.log;
 
 infer:
-	$(PYTHON36) reuse_graph_video.py | tee ss-infer.log
+	@#$(PYTHON36) reuse_graph_video.py | tee ss-infer.log
 	@#$(PYTHON36) reuse_graph.py | tee ss-infer.log
 	@#$(PYTHON36) reuse_graph_video.py | tee ss-infer.log
-	@#$(PYTHON) reuse_graph_video.py | tee ss-infer-gpu.log
+	@#$(PYTHON) reuse_graph_video.py | tee ss-gpu-infer.log
+
+video:
+	$(PYTHON) main_video.py | tee ss-gpu-video.log;
 
 train:
-	$(PYTHON35) main.py | tee ss-gpu-train.log
-	@#$(PYTHON) main.py | tee ss-gpu-train.log
+	@#$(PYTHON35) main.py | tee ss-gpu-train.log
+	$(PYTHON) main.py | tee ss-gpu-train.log
 
 optimize:
 	$(PYTHON) $(OPTIMIZE) \

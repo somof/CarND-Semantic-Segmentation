@@ -31,15 +31,15 @@ def run():
     num_classes = 2
     image_shape = (160, 576)
     data_dir = './data'
-    runs_dir = './runs_reuse'
+    # runs_dir = './runs_reuse'
+    runs_dir = './runs'
+    graph_name = 'frozen'
+
+    graph_path = runs_dir + '/' + graph_name + '_graph.pb'
 
     # Create a TensorFlow configuration object. This will be 
     # passed as an argument to the session.
     config = tf.ConfigProto()
-
-    # avoid Out of GPU memory Error
-    config.gpu_options.allow_growth = True
-    config.gpu_options.per_process_gpu_memory_fraction = 0.9
 
     # JIT level, this can be set to ON_1 or ON_2 
     jit_level = tf.OptimizerOptions.ON_2
@@ -48,17 +48,16 @@ def run():
     config.gpu_options.per_process_gpu_memory_fraction = 1.0
 
     with tf.Session(config=config, graph=tf.Graph()) as sess:
-        #sess, _ = load_graph('./runs_reuse/frozen_graph.pb')
-        #sess, _ = load_graph('./runs_reuse/optimized_graph.pb')
-        sess, _ = load_graph('./runs_reuse/eightbit_graph.pb')
+        print('** name:  ' + graph_path)
+        sess, _ = load_graph(graph_path)
 
         graph = sess.graph
-        adam_angst = graph.get_tensor_by_name('adam_logit:0')
-        image_input = graph.get_tensor_by_name('image_input:0')
-        keep_prob = graph.get_tensor_by_name('keep_prob:0')
+        #adam_angst = graph.get_tensor_by_name('adam_logit:0')
+        #print('Adam Angst = ',adam_angst)
 
-        print('Adam Angst = ',adam_angst)
+        image_input = graph.get_tensor_by_name('image_input:0')
         logits = graph.get_tensor_by_name('adam_logit:0')
+        keep_prob = graph.get_tensor_by_name('keep_prob:0')
 
         flist = [
             #['../../../Shelby/dat/LegacyVideo_05_40_20170619_100415.mp4', 'LegacyVideo_05_40_20170619_100415_fcn8_100.mp4'],

@@ -2,81 +2,67 @@
 
 
 
-## Build the Neural Network
+## Rubric Points
 
-### Does the project load the pretrained vgg model?
+### Build the Neural Network
 
-- The function load_vgg is implemented correctly.
+#### Does the project load the pretrained vgg model?
+This project loads the pre-trained VGG model at load_vgg().
 
-### Does the project learn the correct features from the images?
+#### Does the project learn the correct features from the images?
+This project defines layers fot the FCN method at layers().
 
-- The function layers is implemented correctly.
+#### Does the project optimize the neural network?
+This project defines its loss function and optimizer at optimize().
 
-### Does the project optimize the neural network?
+#### Does the project train the neural network?
+This project trains correctly the network at train_nn().
 
-- The function optimize is implemented correctly.
+### Neural Network Training
 
-### Does the project train the neural network?
+#### Does the project train the model correctly?
+The model decreases loss over time on average as below.
 
-- The function train_nn is implemented correctly.
-  The loss of the network should be printed while the network is training.
+![training curve](curve.png)
 
 
-## Neural Network Training
+#### Does the project use reasonable hyperparameters?
 
-### Does the project train the model correctly?
+- batch_size = 20
+- other hyperparameters are same as Tensorflow initial values.
+  - learning_rate = 0.001
+- epoch number = 1000 (but loss < 0.01)
+  - approximately 100 til the loss value became to be less than 0.01.
 
-- On average, the model decreases loss over time.
+The batch size 20 is the value that shows the most smooth training-curve in some trial as below.
 
-### Does the project use reasonable hyperparameters?
+![batch size](batchsize.png)
 
-- The number of epoch and batch size are set to a reasonable number.
 
-### Does the project correctly label the road?
+#### Does the project correctly label the road?
 
-- The project labels most pixels of roads close to the best solution.
+The project works correctly, and labels the road.
+
+
+
+
+add result
+
+
+labels most pixels of roads close to the best solution.
   The model doesn't have to predict correctly all the images, just most of them.
 
 - A solution that is close to best would label at least 80% of the
   road and label no more than 20% of non-road pixels as road.
 
 
-## Create the spot instance in AWS
-
-https://classroom.udacity.com/nanodegrees/nd013/parts/fbf77062-5703-404e-b60c-95b78b2f3f9e/modules/6df7ae49-c61c-4bb2-a23e-6527e69209ec/lessons/614d4728-0fad-4c9d-a6c3-23227aef8f66/concepts/f6fccba8-0009-4d05-9356-fae428b6efb4#
-
-View your EC2 Service Limit report at: https://console.aws.amazon.com/ec2/v2/home?#Limits
-
-Find your "Current Limit" for the g2.2xlarge instance type.
-
-Note: Not every AWS region supports GPU instances. If the region you've chosen does not support GPU instances, but you would like to use a GPU instance, then change your AWS region.
-
-
-Submit a Limit Increase Request
-From the EC2 Service Limits page, click on “Request limit increase” next to “g2.2xlarge”.
-You will not be charged for requesting a limit increase. You will only be charged once you actually launch an instance.
-
-We’ve created an AMI for you!
-Search for the “udacity-carnd” AMI.
-Select the g2.2xlarge instance type:
-Increase the storage size to 16 GB (or more, if necessary):
-
-
-
-How to run Semantic Segmentation on AWS ?
-https://discussions.udacity.com/t/how-to-run-semantic-segmentation-on-aws/352069/61
-
-
-Spot instances and AMI
-https://discussions.udacity.com/t/spot-instances-and-ami/561250
 
 
 
 
 
 
-
-## Pyenv setting
+## Set up
 
 This project uses python 3.5.4 by pyenv,
 and other after 3.3 versions of python would work as same as it.
@@ -106,23 +92,72 @@ source ~/.bashrc
 pyenv install 3.5.4
 ~/.pyenv/versions/3.5.4/bin/pip3 install tensorflow==1.4 numpy scipy tqdm Pillow
 or
-~/.pyenv/versions/3.5.4/bin/pip3 install tensorflow-gpu==1.4 numpy scipy tqdm Pillow
 ~/.pyenv/versions/3.5.4/bin/pip3 install tensorflow-gpu numpy scipy tqdm Pillow
+
+install cuda-9.0
 ```
 
-~/.pyenv/versions/3.6.4/bin/pip3 install tensorflow numpy scipy tqdm Pillow opencv-python moviepy
+tensorflow-gpu==1.5.0
+numpy==1.14.0
+scipy==1.0.0
+tqdm==4.19.5
+opencv-python==3.4.0.12
+Pillow==5.0.0
+
+
+
+## FCN Model
+
+## Dataset and Training Model
+
+[Kitti Road dataset](http://www.cvlibs.net/datasets/kitti/eval_road.php) 
+
+Extract the dataset in the `data` folder.  This will create the folder `data_road` with all the training a test images.
+
+
+
+
+## Result
+
+sample image
+
+
+trainng curve
+
+
+
+## CUDA ERROR
+
+1,64,160,576 = 47022080 Bit  = 44.844 MB
+4096,512,7,7 = 8.221e+08 Bit = 784 MB
+
+2018-02-13 13:14:53.388304: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:895] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+
+
+
+
+tensorflow.python.framework.errors_impl.ResourceExhaustedError: OOM when allocating tensor with shape[1,64,160,576] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+	 [[Node: conv1_2/Conv2D = Conv2D[T=DT_FLOAT, data_format="NHWC", dilations=[1, 1, 1, 1], padding="SAME", strides=[1, 1, 1, 1], use_cudnn_on_gpu=true, _device="/job:localhost/replica:0/task:0/device:GPU:0"](conv1_1/Relu, conv1_2/filter)]]
+Hint: If you want to see a list of allocated tensors when OOM happens, add report_tensor_allocations_upon_oom to RunOptions for current allocation info.
+
+tensorflow.python.framework.errors_impl.ResourceExhaustedError: OOM when allocating tensor with shape[1,64,160,576] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+	 [[Node: conv1_2/Conv2D = Conv2D[T=DT_FLOAT, data_format="NHWC", dilations=[1, 1, 1, 1], padding="SAME", strides=[1, 1, 1, 1], use_cudnn_on_gpu=true, _device="/job:localhost/replica:0/task:0/device:GPU:0"](conv1_1/Relu, conv1_2/filter)]]
+Hint: If you want to see a list of allocated tensors when OOM happens, add report_tensor_allocations_upon_oom to RunOptions for current allocation info.
+
+
+
+tensorflow.python.framework.errors_impl.ResourceExhaustedError: OOM when allocating tensor with shape[4096,512,7,7] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+	 [[Node: fc6/Conv2D = Conv2D[T=DT_FLOAT, data_format="NHWC", dilations=[1, 1, 1, 1], padding="SAME", strides=[1, 1, 1, 1], use_cudnn_on_gpu=true, _device="/job:localhost/replica:0/task:0/device:GPU:0"](pool5, fc6/weights)]]
+Hint: If you want to see a list of allocated tensors when OOM happens, add report_tensor_allocations_upon_oom to RunOptions for current allocation info.
+
+	 [[Node: Softmax_20/_125 = _Recv[client_terminated=false, recv_device="/job:localhost/replica:0/task:0/device:CPU:0", send_device="/job:localhost/replica:0/task:0/device:GPU:0", send_device_incarnation=1, tensor_name="edge_274_Softmax_20", tensor_type=DT_FLOAT, _device="/job:localhost/replica:0/task:0/device:CPU:0"]()]]
+Hint: If you want to see a list of allocated tensors when OOM happens, add report_tensor_allocations_upon_oom to RunOptions for current allocation info.
 
 
 
 
 
-
-
-
-
-
-
-## original README
+## The following is the original README provided by Udacity
 
 ### Introduction
 In this project, you'll label the pixels of a road in images using a Fully Convolutional Network (FCN).

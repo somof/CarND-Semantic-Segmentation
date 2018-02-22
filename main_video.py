@@ -7,6 +7,11 @@ import project_tests as tests
 
 import time
 
+import scipy.misc
+import cv2
+import numpy as np
+from moviepy.editor import VideoFileClip
+
 
 # Check TensorFlow Version
 assert LooseVersion(tf.__version__) >= LooseVersion('1.0'), 'Please use TensorFlow version 1.0 or newer.  You are using {}'.format(tf.__version__)
@@ -189,7 +194,7 @@ def run():
     num_classes = 2
     image_shape = (160, 576)
     data_dir = './data'
-    runs_dir = './runs_train_x'
+    runs_dir = './runs_video'
     tests.test_for_kitti_dataset(data_dir)
 
     # Download pretrained vgg model
@@ -239,6 +244,54 @@ def run():
         helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)
 
         # OPTIONAL: Apply the trained model to a video
+        flist = [
+            ['../../../Shelby/dat/LegacyVideo_05_40_20170622_144203.mp4', 'LegacyVideo_05_40_20170622_144203_fcn8_1000.mp4', (612, 512)],
+            ['../../../Shelby/dat/LegacyVideo_05_40_20170623_113915.mp4', 'LegacyVideo_05_40_20170623_113915_fcn8_1000.mp4', (612, 512)],
+            ['../../../Shelby/dat/LegacyVideo_05_40_20170809_132418.mp4', 'LegacyVideo_05_40_20170809_132418_fcn8_1000.mp4', (612, 512)],
+            ['../../../Shelby/dat/LegacyVideo_05_40_20170626_133711.mp4', 'LegacyVideo_05_40_20170626_133711_fcn8_1000.mp4', (612, 512)],
+            ['../../../Shelby/dat/LegacyVideo_05_40_20170809_132654.mp4', 'LegacyVideo_05_40_20170809_132654_fcn8_1000.mp4', (612, 512)],
+            ['../../../Shelby/dat/LegacyVideo_05_40_20170809_133009.mp4', 'LegacyVideo_05_40_20170809_133009_fcn8_1000.mp4', (612, 512)],
+            ['../../../Shelby/dat/LegacyVideo_05_40_20170619_100415.mp4', 'LegacyVideo_05_40_20170619_100415_fcn8_1000.mp4', (612, 512)],
+            ['project_video.mp4', 'project_video_fcn8_100.mp4', (640, 360)]]
+
+        for files in (flist):
+
+            print('file: ' + files[0] + ' -> ' + files[1], flush=True)
+            clip1 = VideoFileClip(files[0])
+
+            save_size = files[2]
+
+            fps = 30
+            fourcc = cv2.VideoWriter_fourcc('M', 'P', '4', 'V')
+            video_out = cv2.VideoWriter(files[1], int(fourcc), fps, save_size)
+
+            frameno = 0
+            for frame in clip1.iter_frames():
+                frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+                image = scipy.misc.imresize(frame, image_shape)
+
+                im_softmax = sess.run([tf.nn.softmax(logits)],
+                                      {keep_prob: 1.0, input_image: [image]})
+                im_softmax = im_softmax[0][:, 1].reshape(image_shape[0], image_shape[1])
+                segmentation = (im_softmax > 0.5).reshape(image_shape[0], image_shape[1], 1)
+                mask = np.dot(segmentation, np.array([[0, 255, 0, 127]]))
+                mask = scipy.misc.toimage(mask, mode="RGBA")
+                street_im = scipy.misc.toimage(image)
+                street_im.paste(mask, box=None, mask=mask)
+
+                result = np.array(street_im)
+                result2 = cv2.resize(result, (save_size[0], save_size[1]))
+                video_out.write(result2)
+ 
+                frameno += 1
+                if 3000 < frameno:
+                    break
+
+                #cv2.imshow('fcn8s', result2)
+                #if cv2.waitKey(1) & 0xFF == ord('q'):
+                #    break
+
+            video_out = None
 
 
 if __name__ == '__main__':

@@ -109,3 +109,4 @@ fcn8-loop1/
 loop1000_20180208/
 trash/
 optimize_for_inference.py
+*.bmp
