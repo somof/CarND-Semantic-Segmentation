@@ -97,6 +97,7 @@ def gen_batch_function(data_folder, image_shape):
             yield np.array(images), np.array(gt_images)
     return get_batches_fn
 
+from tensorflow.core.protobuf import config_pb2
 
 def gen_test_output(sess, logits, keep_prob, image_pl, data_folder, image_shape):
     """
@@ -110,11 +111,16 @@ def gen_test_output(sess, logits, keep_prob, image_pl, data_folder, image_shape)
     :return: Output for for each test image
     """
     for image_file in glob(os.path.join(data_folder, 'image_2', '*.png')):
+
+        # print('*** image file: ' + image_file, flush=True)
+
         image = scipy.misc.imresize(scipy.misc.imread(image_file), image_shape)
 
         im_softmax = sess.run(
             [tf.nn.softmax(logits)],
-            {keep_prob: 1.0, image_pl: [image]})
+            {keep_prob: 1.0, image_pl: [image]},
+            options=config_pb2.RunOptions(report_tensor_allocations_upon_oom=True)
+            )
         im_softmax = im_softmax[0][:, 1].reshape(image_shape[0], image_shape[1])
         segmentation = (im_softmax > 0.5).reshape(image_shape[0], image_shape[1], 1)
         mask = np.dot(segmentation, np.array([[0, 255, 0, 127]]))
@@ -123,6 +129,7 @@ def gen_test_output(sess, logits, keep_prob, image_pl, data_folder, image_shape)
         street_im.paste(mask, box=None, mask=mask)
 
         yield os.path.basename(image_file), np.array(street_im)
+        #scipy.misc.imsave(os.path.join(output_dir, os.path.basename(image_file)), np.array(street_im))
 
 
 def save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image):
@@ -134,6 +141,8 @@ def save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_p
 
     # Run NN on test images and save them to HD
     print('Training Finished. Saving test images to: {}'.format(output_dir))
+    # gen_test_output(sess, logits, keep_prob, input_image, os.path.join(data_dir, 'data_road/testing'), image_shape, output_dir)
+
     image_outputs = gen_test_output(
         sess, logits, keep_prob, input_image, os.path.join(data_dir, 'data_road/testing'), image_shape)
     for name, image in image_outputs:

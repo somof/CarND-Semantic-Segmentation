@@ -1,28 +1,23 @@
 # Semantic Segmentation
 
-
-
 ## Introduction
+The aim of this project is to understanding the concept of FCN (Fully Convolutional Neural Network) that is one of the basical Semantic Segmentation algorithms.
 
-Aim
+### Program
+The program in this project uses the VGG-16 for image feature extraction to perform semantic segmentation to identify drivable road area from images.
 
- the concepts of Fully Convolutional Network (FCN) and write a program to label the pixels of a road in images.
- 
+### Dataset and pre-trained VGG16 model
 
+The program uses frozen VGG16 model provided [here](https://s3-us-west-1.amazonaws.com/udacity-selfdrivingcar/vgg.zip) from udacity.
 
+Then the program trains its network with [Kitti Road dataset](http://www.cvlibs.net/datasets/kitti/eval_road.php) that consists of 289 training and 290 test images. 
 
-# Dataset
+It contains three different categories of road scenes:
 
-uu - urban unmarked (98/100)
-um - urban marked (95/96)
-umm - urban multiple marked lanes (96/94)
-<!-- 
-urban - combination of the three above
--->
+- uu - urban unmarked (98/100)
+- um - urban marked (95/96)
+- umm - urban multiple marked lanes (96/94)
 
-[Kitti Road dataset](http://www.cvlibs.net/datasets/kitti/eval_road.php) 
-
-Extract the dataset in the `data` folder.  This will create the folder `data_road` with all the training a test images.
 ### Result
 
 images
