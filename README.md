@@ -21,30 +21,25 @@ It contains three different categories of road scenes:
 ### Result
 Following images are some sample sets of original images and output images infered by the FCN.
 
-<img src="data/data_road/testing/image_2/um_000000.png" width=40%>
-<img src="runs/1519289176.8899539/um_000000.png" width=40%>
+<img src="data/data_road/testing/image_2/uu_000000.png" width=40%><img src="runs/1519289176.8899539/uu_000000.png" width=40%>
 
-<img src="data/data_road/testing/image_2/um_000050.png" width=40%>
-<img src="runs/1519289176.8899539/um_000050.png" width=40%>
+<img src="data/data_road/testing/image_2/uu_000050.png" width=40%><img src="runs/1519289176.8899539/uu_000050.png" width=40%>
 
-<img src="data/data_road/testing/image_2/umm_000000.png" width=40%>
-<img src="runs/1519289176.8899539/umm_000000.png" width=40%>
+<img src="data/data_road/testing/image_2/um_000000.png" width=40%><img src="runs/1519289176.8899539/um_000000.png" width=40%>
 
-<img src="data/data_road/testing/image_2/umm_000050.png" width=40%>
-<img src="runs/1519289176.8899539/umm_000050.png" width=40%>
+<img src="data/data_road/testing/image_2/um_000050.png" width=40%><img src="runs/1519289176.8899539/um_000050.png" width=40%>
 
-<img src="data/data_road/testing/image_2/uu_000000.png" width=40%>
-<img src="runs/1519289176.8899539/uu_000000.png" width=40%>
+<img src="data/data_road/testing/image_2/umm_000000.png" width=40%><img src="runs/1519289176.8899539/umm_000000.png" width=40%>
 
-<img src="data/data_road/testing/image_2/uu_000050.png" width=40%>
-<img src="runs/1519289176.8899539/uu_000050.png" width=40%>
+<img src="data/data_road/testing/image_2/umm_000050.png" width=40%><img src="runs/1519289176.8899539/umm_000050.png" width=40%>
+
 
 
 All infered images are shown as three videos as follows.
 
-[video_um](runs/video_um.mp4)
-[video_umm](runs/video_umm.mp4)
-[video_uu](runs/video_uu.mp4)
+- [video_uu](runs/video_uu.mp4 "video_uu")
+- [video_um](runs/video_um.mp4 "video_um")
+- [video_umm](runs/video_umm.mp4 "video_umm")
 
 
 <!--
