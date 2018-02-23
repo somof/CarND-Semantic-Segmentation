@@ -42,9 +42,9 @@ Following images are some sample sets of original images and output images infer
 
 All infered images are shown as three videos as follows.
 
-![video_um](runs/video_um.mp4)
-![video_umm](runs/video_umm.mp4)
-![video_uu](runs/video_uu.mp4)
+[video_um](runs/video_um.mp4)
+[video_umm](runs/video_umm.mp4)
+[video_uu](runs/video_uu.mp4)
 
 
 <!--
