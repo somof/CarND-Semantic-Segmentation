@@ -42,7 +42,8 @@ infer:
 	@#$(PYTHON) reuse_graph_video.py | tee ss-gpu-infer.log
 
 video:
-	$(PYTHON) main_video.py | tee ss-gpu-video.log;
+	$(PYTHON) main.py | tee ss-gpu.log;
+	#$(PYTHON) main_video.py | tee ss-gpu-video.log;
 
 train:
 	@#$(PYTHON35) main.py | tee ss-gpu-train.log

@@ -183,7 +183,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
         end_time = time.clock()
         train_time = end_time - start_time
         print("Epoch: {}/{}, {:.3f} sec, Loss: {:.3f}".format(epoch + 1, epochs, train_time, loss), flush=True)
-        if loss <= 0.010:
+        if loss <= 0.01:
             return
 
 
